@@ -23,17 +23,7 @@ package org.thingml.compilers.checker.genericRules;
 import java.util.HashSet;
 import java.util.Set;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.sintef.thingml.Configuration;
-import org.sintef.thingml.Event;
-import org.sintef.thingml.Expression;
-import org.sintef.thingml.Handler;
-import org.sintef.thingml.Instance;
-import org.sintef.thingml.InternalTransition;
-import org.sintef.thingml.ReceiveMessage;
-import org.sintef.thingml.State;
-import org.sintef.thingml.StateMachine;
-import org.sintef.thingml.Thing;
-import org.sintef.thingml.Transition;
+import org.sintef.thingml.*;
 import org.thingml.compilers.checker.Checker;
 import org.thingml.compilers.checker.Rule;
 
@@ -79,27 +69,28 @@ public class NonDeterministicTransitions extends Rule {
     public void check(Configuration cfg, Checker checker) {
         for(Thing t : cfg.allThings()) {
             for(StateMachine sm : t.allStateMachines()) {
-                for(State s : sm.allContainedStates()) {
+                for (AbstractState s : sm.allContainedStates()) {
+                    if (s instanceof State) {
                     Set<Pair> events = new HashSet<Pair>();
                     boolean existEmpty = false, emptyHaveGuard = false;
-                    for(Transition tr : s.getOutgoing()) {
-                        if(tr.getEvent().isEmpty()) {
-                            if(tr.getGuard() == null) {
+                    for (Transition tr : ((State)s).getOutgoing()) {
+                        if (tr.getEvent().isEmpty()) {
+                            if (tr.getGuard() == null) {
                                 emptyHaveGuard = true;
                             }
-                            if(existEmpty && emptyHaveGuard) {
+                            if (existEmpty && emptyHaveGuard) {
                                 checker.addGenericError("Non deterministic behaviour: Two empty transitions, with at least one without a guard", s);
                             }
                             existEmpty = true;
                         } else {
-                            for(Event e : tr.getEvent()) {
+                            for (Event e : tr.getEvent()) {
                                 Pair f = containsEvent(events, e);
-                                if(f == null) {
+                                if (f == null) {
                                     events.add(new Pair(e, tr.getGuard()));
                                 } else {
-                                    if((tr.getGuard() == null) || (f.g == null)) {
+                                    if ((tr.getGuard() == null) || (f.g == null)) {
                                         String msg;
-                                        if(e instanceof ReceiveMessage) {
+                                        if (e instanceof ReceiveMessage) {
                                             ReceiveMessage r = (ReceiveMessage) e;
                                             msg = r.getPort().getName() + "?" + r.getMessage().getName();
                                         } else {
@@ -112,6 +103,7 @@ public class NonDeterministicTransitions extends Rule {
                         }
                     }
                 }
+            }
             }
         }
     }

@@ -325,7 +325,7 @@ public abstract class CCompilerContext extends Context {
         return r.qname("_") + "_State";
     }
 
-    public String getStateID(State s) {
+    public String getStateID(AbstractState s) {
         return s.qname("_").toUpperCase() + "_STATE";
     }
 

@@ -49,6 +49,7 @@ import java.util.Map;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.impl.ThingImpl#getProperties <em>Properties</em>}</li>
  *   <li>{@link org.sintef.thingml.impl.ThingImpl#isFragment <em>Fragment</em>}</li>
@@ -61,7 +62,6 @@ import java.util.Map;
  *   <li>{@link org.sintef.thingml.impl.ThingImpl#getStreams <em>Streams</em>}</li>
  *   <li>{@link org.sintef.thingml.impl.ThingImpl#getOperators <em>Operators</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -561,12 +561,14 @@ public class ThingImpl extends TypeImpl implements Thing {
         //var result = new ArrayList[Handler]()
         final List<Transition> result = new ArrayList<Transition>();
         for(StateMachine sm : getBehaviour()) {
-            for(State s : sm.allStates()) {
-                for(Transition o : s.getOutgoing()) {
+            for(AbstractState s : sm.allStates()) {
+            	if (s instanceof State) {
+                for(Transition o : ((State)s).getOutgoing()) {
                     if (o.getAction() != null) {
                         result.add(o);
                     }
                 }
+            	}
             }
         }
         return result;
@@ -581,12 +583,14 @@ public class ThingImpl extends TypeImpl implements Thing {
         //var result = new ArrayList[Handler]()
         final List<InternalTransition> result = new ArrayList<InternalTransition>();
         for(StateMachine sm : getBehaviour()) {
-            for(State s : sm.allStates()) {
-                for(InternalTransition o : s.getInternal()) {
+            for(AbstractState s : sm.allStates()) {
+            	if (s instanceof State) {
+                for(InternalTransition o : ((State)s).getInternal()) {
                     if (o.getAction() != null) {
                         result.add(o);
                     }
                 }
+            	}
             }
         }
         return result;
@@ -840,22 +844,24 @@ public class ThingImpl extends TypeImpl implements Thing {
 			result.addAll(getAllSendAction(f.getBody()));
 		}*/
 		for(StateMachine sm : allStateMachines()) {
-			for(State s : sm.allStates()) {
+			for(AbstractState s : sm.allStates()) {
 				if (s.getEntry() != null) {
 					result.addAll(getAllAction(clazz, s.getEntry()));
 				}
-				if (s.getExit() != null) {
+				if (s instanceof State) {
+				if (((State)s).getExit() != null) {
 					result.addAll(getAllAction(clazz, s.getEntry()));
 				}
-				for(InternalTransition t : s.getInternal()) {
+				for(InternalTransition t : ((State)s).getInternal()) {
 					if (t.getAction() != null) {
 						result.addAll(getAllAction(clazz, t.getAction()));
 					}
 				}
-				for(Transition t : s.getOutgoing()) {
+				for(Transition t : ((State)s).getOutgoing()) {
 					if (t.getAction() != null) {
 						result.addAll(getAllAction(clazz, t.getAction()));
 					}
+				}
 				}
 			}
 		}
@@ -869,22 +875,24 @@ public class ThingImpl extends TypeImpl implements Thing {
 	public List<Expression> allExpression(Class clazz) {
 		List<Expression> result = new ArrayList<Expression>();
 		for(StateMachine sm : allStateMachines()) {
-			for(State s : sm.allStates()) {
+			for(AbstractState s : sm.allStates()) {
 				if (s.getEntry() != null) {
 					result.addAll(getAllExpression(clazz, s.getEntry()));
 				}
-				if (s.getExit() != null) {
+				if (s instanceof State) {
+				if (((State)s).getExit() != null) {
 					result.addAll(getAllExpression(clazz, s.getEntry()));
 				}
-				for(InternalTransition t : s.getInternal()) {
+				for(InternalTransition t : ((State)s).getInternal()) {
 					if (t.getAction() != null) {
 						result.addAll(getAllExpression(clazz, t.getAction()));
 					}
 				}
-				for(Transition t : s.getOutgoing()) {
+				for(Transition t : ((State)s).getOutgoing()) {
 					if (t.getAction() != null) {
 						result.addAll(getAllExpression(clazz, t.getAction()));
 					}
+				}
 				}
 			}
 		}

@@ -281,7 +281,7 @@ public class JSThingImplCompiler extends FSMBasedThingImplCompiler {
             ctx.addContextAnnotation("container", "this." + sm.qname("_"));
             generateRegion(r, builder, ctx);
         }
-        for (State s : sm.getSubstate()) {
+        for (AbstractState s : sm.getSubstate()) {
             ctx.addContextAnnotation("container", "this." + sm.qname("_"));
             generateState(s, builder, ctx);
         }
@@ -341,7 +341,7 @@ public class JSThingImplCompiler extends FSMBasedThingImplCompiler {
             else
                 builder.append("var _initial_" + c.qname("_") + " = new StateJS.pseudoState(\"_initial\", " + c.qname("_") + ", StateJS.PseudoStateKind.Initial);\n");
             builder.append("_initial_" + c.qname("_") + ".to(" + c.getInitial().qname("_") + ");\n");
-            for (State s : c.getSubstate()) {
+            for (AbstractState s : c.getSubstate()) {
                 ctx.addContextAnnotation("container", c.qname("_") + "_default");
                 generateState(s, builder, ctx);
             }
@@ -353,7 +353,7 @@ public class JSThingImplCompiler extends FSMBasedThingImplCompiler {
             builder.append("var " + c.qname("_") + " = new StateJS.State(\"" + c.getName() + "\", " + containerName + ")");
             generateActionsForState(c, builder, ctx);
             builder.append(";\n");
-            for (State s : c.getSubstate()) {
+            for (AbstractState s : c.getSubstate()) {
                 ctx.addContextAnnotation("container", c.qname("_"));
                 generateState(s, builder, ctx);
             }
@@ -379,7 +379,7 @@ public class JSThingImplCompiler extends FSMBasedThingImplCompiler {
             builder.append("var _initial_" + r.qname("_") + "_reg = new StateJS.PseudoState(\"_initial\", " + r.qname("_") + "_reg, StateJS.PseudoStateKind.ShallowHistory);\n");
         else
             builder.append("var _initial_" + r.qname("_") + "_reg = new StateJS.PseudoState(\"_initial\", " + r.qname("_") + "_reg, StateJS.PseudoStateKind.Initial);\n");
-        for (State s : r.getSubstate()) {
+        for (AbstractState s : r.getSubstate()) {
             ctx.addContextAnnotation("container", r.qname("_") + "_reg");
             generateState(s, builder, ctx);
         }

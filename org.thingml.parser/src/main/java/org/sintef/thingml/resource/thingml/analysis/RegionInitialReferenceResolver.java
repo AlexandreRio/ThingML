@@ -28,6 +28,7 @@
  */
 package org.sintef.thingml.resource.thingml.analysis;
 
+import org.sintef.thingml.AbstractState;
 import org.sintef.thingml.State;
 
 public class RegionInitialReferenceResolver implements org.sintef.thingml.resource.thingml.IThingmlReferenceResolver<org.sintef.thingml.Region, org.sintef.thingml.State> {
@@ -35,10 +36,10 @@ public class RegionInitialReferenceResolver implements org.sintef.thingml.resour
 	private org.sintef.thingml.resource.thingml.analysis.ThingmlDefaultResolverDelegate<org.sintef.thingml.Region, org.sintef.thingml.State> delegate = new org.sintef.thingml.resource.thingml.analysis.ThingmlDefaultResolverDelegate<org.sintef.thingml.Region, org.sintef.thingml.State>();
 	
 	public void resolve(String identifier, org.sintef.thingml.Region container, org.eclipse.emf.ecore.EReference reference, int position, boolean resolveFuzzy, final org.sintef.thingml.resource.thingml.IThingmlReferenceResolveResult<org.sintef.thingml.State> result) {
-		for(State s : container.getSubstate()) {
-			if (s.getName().startsWith(identifier)) {
+		for(AbstractState s : container.getSubstate()) {
+			if (s instanceof State && s.getName().startsWith(identifier)) {
 				if (resolveFuzzy || s.getName().equals(identifier))
-				result.addMapping(s.getName(), s);
+				result.addMapping(s.getName(), (State)s);
 			}
 		}
 		if (!result.wasResolved()) {

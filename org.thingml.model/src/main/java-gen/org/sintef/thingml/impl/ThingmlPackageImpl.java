@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.sintef.thingml.AbstractConnector;
+import org.sintef.thingml.AbstractState;
 import org.sintef.thingml.Action;
 import org.sintef.thingml.ActionBlock;
 import org.sintef.thingml.AndExpression;
@@ -55,6 +56,8 @@ import org.sintef.thingml.ExternExpression;
 import org.sintef.thingml.ExternStatement;
 import org.sintef.thingml.ExternalConnector;
 import org.sintef.thingml.Filter;
+import org.sintef.thingml.FinalState;
+import org.sintef.thingml.Fork;
 import org.sintef.thingml.Function;
 import org.sintef.thingml.FunctionCall;
 import org.sintef.thingml.FunctionCallExpression;
@@ -277,7 +280,28 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass forkEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass internalTransitionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass abstractStateEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass finalStateEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1410,8 +1434,8 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTransition_After() {
-		return (EReference)transitionEClass.getEStructuralFeatures().get(2);
+	public EClass getFork() {
+		return forkEClass;
 	}
 
 	/**
@@ -1419,8 +1443,8 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTransition_Before() {
-		return (EReference)transitionEClass.getEStructuralFeatures().get(3);
+	public EReference getFork_ForkedInitial() {
+		return (EReference)forkEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1430,6 +1454,51 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 	 */
 	public EClass getInternalTransition() {
 		return internalTransitionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getAbstractState() {
+		return abstractStateEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAbstractState_Incoming() {
+		return (EReference)abstractStateEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAbstractState_Entry() {
+		return (EReference)abstractStateEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAbstractState_Properties() {
+		return (EReference)abstractStateEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getFinalState() {
+		return finalStateEClass;
 	}
 
 	/**
@@ -1455,7 +1524,7 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getState_Incoming() {
+	public EReference getState_Fork() {
 		return (EReference)stateEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1464,7 +1533,7 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getState_Entry() {
+	public EReference getState_Exit() {
 		return (EReference)stateEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -1473,26 +1542,8 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getState_Exit() {
-		return (EReference)stateEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getState_Properties() {
-		return (EReference)stateEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EReference getState_Internal() {
-		return (EReference)stateEClass.getEStructuralFeatures().get(5);
+		return (EReference)stateEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -3150,8 +3201,6 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 		annotatedElementEClass = createEClass(ANNOTATED_ELEMENT);
 		createEReference(annotatedElementEClass, ANNOTATED_ELEMENT__ANNOTATIONS);
 
-		stateMachineEClass = createEClass(STATE_MACHINE);
-
 		handlerEClass = createEClass(HANDLER);
 		createEReference(handlerEClass, HANDLER__EVENT);
 		createEReference(handlerEClass, HANDLER__GUARD);
@@ -3160,26 +3209,34 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 		transitionEClass = createEClass(TRANSITION);
 		createEReference(transitionEClass, TRANSITION__TARGET);
 		createEReference(transitionEClass, TRANSITION__SOURCE);
-		createEReference(transitionEClass, TRANSITION__AFTER);
-		createEReference(transitionEClass, TRANSITION__BEFORE);
+
+		forkEClass = createEClass(FORK);
+		createEReference(forkEClass, FORK__FORKED_INITIAL);
 
 		internalTransitionEClass = createEClass(INTERNAL_TRANSITION);
 
-		stateEClass = createEClass(STATE);
-		createEReference(stateEClass, STATE__OUTGOING);
-		createEReference(stateEClass, STATE__INCOMING);
-		createEReference(stateEClass, STATE__ENTRY);
-		createEReference(stateEClass, STATE__EXIT);
-		createEReference(stateEClass, STATE__PROPERTIES);
-		createEReference(stateEClass, STATE__INTERNAL);
+		abstractStateEClass = createEClass(ABSTRACT_STATE);
+		createEReference(abstractStateEClass, ABSTRACT_STATE__INCOMING);
+		createEReference(abstractStateEClass, ABSTRACT_STATE__ENTRY);
+		createEReference(abstractStateEClass, ABSTRACT_STATE__PROPERTIES);
 
-		compositeStateEClass = createEClass(COMPOSITE_STATE);
-		createEReference(compositeStateEClass, COMPOSITE_STATE__REGION);
+		finalStateEClass = createEClass(FINAL_STATE);
 
 		regionEClass = createEClass(REGION);
 		createEReference(regionEClass, REGION__SUBSTATE);
 		createEReference(regionEClass, REGION__INITIAL);
 		createEAttribute(regionEClass, REGION__HISTORY);
+
+		stateEClass = createEClass(STATE);
+		createEReference(stateEClass, STATE__OUTGOING);
+		createEReference(stateEClass, STATE__FORK);
+		createEReference(stateEClass, STATE__EXIT);
+		createEReference(stateEClass, STATE__INTERNAL);
+
+		compositeStateEClass = createEClass(COMPOSITE_STATE);
+		createEReference(compositeStateEClass, COMPOSITE_STATE__REGION);
+
+		stateMachineEClass = createEClass(STATE_MACHINE);
 
 		parallelRegionEClass = createEClass(PARALLEL_REGION);
 
@@ -3476,14 +3533,17 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 		primitiveTypeEClass.getESuperTypes().add(this.getType());
 		enumerationLiteralEClass.getESuperTypes().add(this.getAnnotatedElement());
 		annotatedElementEClass.getESuperTypes().add(this.getThingMLElement());
-		stateMachineEClass.getESuperTypes().add(this.getCompositeState());
 		handlerEClass.getESuperTypes().add(this.getAnnotatedElement());
 		transitionEClass.getESuperTypes().add(this.getHandler());
+		forkEClass.getESuperTypes().add(this.getHandler());
 		internalTransitionEClass.getESuperTypes().add(this.getHandler());
-		stateEClass.getESuperTypes().add(this.getAnnotatedElement());
+		abstractStateEClass.getESuperTypes().add(this.getAnnotatedElement());
+		finalStateEClass.getESuperTypes().add(this.getAbstractState());
+		regionEClass.getESuperTypes().add(this.getAnnotatedElement());
+		stateEClass.getESuperTypes().add(this.getAbstractState());
 		compositeStateEClass.getESuperTypes().add(this.getState());
 		compositeStateEClass.getESuperTypes().add(this.getRegion());
-		regionEClass.getESuperTypes().add(this.getAnnotatedElement());
+		stateMachineEClass.getESuperTypes().add(this.getCompositeState());
 		parallelRegionEClass.getESuperTypes().add(this.getRegion());
 		actionBlockEClass.getESuperTypes().add(this.getAction());
 		externStatementEClass.getESuperTypes().add(this.getAction());
@@ -3626,36 +3686,42 @@ public class ThingmlPackageImpl extends EPackageImpl implements ThingmlPackage {
 		initEClass(annotatedElementEClass, AnnotatedElement.class, "AnnotatedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAnnotatedElement_Annotations(), this.getPlatformAnnotation(), null, "annotations", null, 0, -1, AnnotatedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(stateMachineEClass, StateMachine.class, "StateMachine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
 		initEClass(handlerEClass, Handler.class, "Handler", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getHandler_Event(), this.getEvent(), null, "event", null, 0, -1, Handler.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getHandler_Guard(), this.getExpression(), null, "guard", null, 0, 1, Handler.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getHandler_Action(), this.getAction(), null, "action", null, 0, 1, Handler.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(transitionEClass, Transition.class, "Transition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getTransition_Target(), this.getState(), this.getState_Incoming(), "target", null, 1, 1, Transition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTransition_Target(), this.getAbstractState(), this.getAbstractState_Incoming(), "target", null, 1, 1, Transition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTransition_Source(), this.getState(), this.getState_Outgoing(), "source", null, 1, 1, Transition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTransition_After(), this.getAction(), null, "after", null, 0, 1, Transition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTransition_Before(), this.getAction(), null, "before", null, 0, 1, Transition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(forkEClass, Fork.class, "Fork", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getFork_ForkedInitial(), this.getState(), null, "forkedInitial", null, 1, 1, Fork.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(internalTransitionEClass, InternalTransition.class, "InternalTransition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(abstractStateEClass, AbstractState.class, "AbstractState", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getAbstractState_Incoming(), this.getTransition(), this.getTransition_Target(), "incoming", null, 0, -1, AbstractState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAbstractState_Entry(), this.getAction(), null, "entry", null, 0, 1, AbstractState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAbstractState_Properties(), this.getProperty(), null, "properties", null, 0, -1, AbstractState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(finalStateEClass, FinalState.class, "FinalState", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(regionEClass, Region.class, "Region", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getRegion_Substate(), this.getAbstractState(), null, "substate", null, 0, -1, Region.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRegion_Initial(), this.getState(), null, "initial", null, 1, 1, Region.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRegion_History(), ecorePackage.getEBoolean(), "history", null, 0, 1, Region.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(stateEClass, State.class, "State", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getState_Outgoing(), this.getTransition(), this.getTransition_Source(), "outgoing", null, 0, -1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getState_Incoming(), this.getTransition(), this.getTransition_Target(), "incoming", null, 0, -1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getState_Entry(), this.getAction(), null, "entry", null, 0, 1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getState_Fork(), this.getFork(), null, "fork", null, 0, -1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getState_Exit(), this.getAction(), null, "exit", null, 0, 1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getState_Properties(), this.getProperty(), null, "properties", null, 0, -1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getState_Internal(), this.getInternalTransition(), null, "internal", null, 0, -1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(compositeStateEClass, CompositeState.class, "CompositeState", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCompositeState_Region(), this.getParallelRegion(), null, "region", null, 0, -1, CompositeState.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(regionEClass, Region.class, "Region", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getRegion_Substate(), this.getState(), null, "substate", null, 0, -1, Region.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRegion_Initial(), this.getState(), null, "initial", null, 1, 1, Region.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getRegion_History(), ecorePackage.getEBoolean(), "history", null, 0, 1, Region.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(stateMachineEClass, StateMachine.class, "StateMachine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(parallelRegionEClass, ParallelRegion.class, "ParallelRegion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

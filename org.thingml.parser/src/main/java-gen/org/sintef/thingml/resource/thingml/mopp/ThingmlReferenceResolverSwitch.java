@@ -29,6 +29,7 @@ public class ThingmlReferenceResolverSwitch implements org.sintef.thingml.resour
 	protected org.sintef.thingml.resource.thingml.analysis.PortSendsReferenceResolver portSendsReferenceResolver = new org.sintef.thingml.resource.thingml.analysis.PortSendsReferenceResolver();
 	protected org.sintef.thingml.resource.thingml.analysis.RegionInitialReferenceResolver regionInitialReferenceResolver = new org.sintef.thingml.resource.thingml.analysis.RegionInitialReferenceResolver();
 	protected org.sintef.thingml.resource.thingml.analysis.TransitionTargetReferenceResolver transitionTargetReferenceResolver = new org.sintef.thingml.resource.thingml.analysis.TransitionTargetReferenceResolver();
+	protected org.sintef.thingml.resource.thingml.analysis.ForkForkedInitialReferenceResolver forkForkedInitialReferenceResolver = new org.sintef.thingml.resource.thingml.analysis.ForkForkedInitialReferenceResolver();
 	protected org.sintef.thingml.resource.thingml.analysis.ReceiveMessagePortReferenceResolver receiveMessagePortReferenceResolver = new org.sintef.thingml.resource.thingml.analysis.ReceiveMessagePortReferenceResolver();
 	protected org.sintef.thingml.resource.thingml.analysis.ReceiveMessageMessageReferenceResolver receiveMessageMessageReferenceResolver = new org.sintef.thingml.resource.thingml.analysis.ReceiveMessageMessageReferenceResolver();
 	protected org.sintef.thingml.resource.thingml.analysis.PropertyAssignPropertyReferenceResolver propertyAssignPropertyReferenceResolver = new org.sintef.thingml.resource.thingml.analysis.PropertyAssignPropertyReferenceResolver();
@@ -81,8 +82,12 @@ public class ThingmlReferenceResolverSwitch implements org.sintef.thingml.resour
 		return getResolverChain(org.sintef.thingml.ThingmlPackage.eINSTANCE.getRegion_Initial(), regionInitialReferenceResolver);
 	}
 	
-	public org.sintef.thingml.resource.thingml.IThingmlReferenceResolver<org.sintef.thingml.Transition, org.sintef.thingml.State> getTransitionTargetReferenceResolver() {
+	public org.sintef.thingml.resource.thingml.IThingmlReferenceResolver<org.sintef.thingml.Transition, org.sintef.thingml.AbstractState> getTransitionTargetReferenceResolver() {
 		return getResolverChain(org.sintef.thingml.ThingmlPackage.eINSTANCE.getTransition_Target(), transitionTargetReferenceResolver);
+	}
+	
+	public org.sintef.thingml.resource.thingml.IThingmlReferenceResolver<org.sintef.thingml.Fork, org.sintef.thingml.State> getForkForkedInitialReferenceResolver() {
+		return getResolverChain(org.sintef.thingml.ThingmlPackage.eINSTANCE.getFork_ForkedInitial(), forkForkedInitialReferenceResolver);
 	}
 	
 	public org.sintef.thingml.resource.thingml.IThingmlReferenceResolver<org.sintef.thingml.ReceiveMessage, org.sintef.thingml.Port> getReceiveMessagePortReferenceResolver() {
@@ -205,6 +210,7 @@ public class ThingmlReferenceResolverSwitch implements org.sintef.thingml.resour
 		portSendsReferenceResolver.setOptions(options);
 		regionInitialReferenceResolver.setOptions(options);
 		transitionTargetReferenceResolver.setOptions(options);
+		forkForkedInitialReferenceResolver.setOptions(options);
 		receiveMessagePortReferenceResolver.setOptions(options);
 		receiveMessageMessageReferenceResolver.setOptions(options);
 		propertyAssignPropertyReferenceResolver.setOptions(options);
@@ -287,11 +293,19 @@ public class ThingmlReferenceResolverSwitch implements org.sintef.thingml.resour
 			}
 		}
 		if (org.sintef.thingml.ThingmlPackage.eINSTANCE.getTransition().isInstance(container)) {
-			ThingmlFuzzyResolveResult<org.sintef.thingml.State> frr = new ThingmlFuzzyResolveResult<org.sintef.thingml.State>(result);
+			ThingmlFuzzyResolveResult<org.sintef.thingml.AbstractState> frr = new ThingmlFuzzyResolveResult<org.sintef.thingml.AbstractState>(result);
 			String referenceName = reference.getName();
 			org.eclipse.emf.ecore.EStructuralFeature feature = container.eClass().getEStructuralFeature(referenceName);
 			if (feature != null && feature instanceof org.eclipse.emf.ecore.EReference && referenceName != null && referenceName.equals("target")) {
 				transitionTargetReferenceResolver.resolve(identifier, (org.sintef.thingml.Transition) container, (org.eclipse.emf.ecore.EReference) feature, position, true, frr);
+			}
+		}
+		if (org.sintef.thingml.ThingmlPackage.eINSTANCE.getFork().isInstance(container)) {
+			ThingmlFuzzyResolveResult<org.sintef.thingml.State> frr = new ThingmlFuzzyResolveResult<org.sintef.thingml.State>(result);
+			String referenceName = reference.getName();
+			org.eclipse.emf.ecore.EStructuralFeature feature = container.eClass().getEStructuralFeature(referenceName);
+			if (feature != null && feature instanceof org.eclipse.emf.ecore.EReference && referenceName != null && referenceName.equals("forkedInitial")) {
+				forkForkedInitialReferenceResolver.resolve(identifier, (org.sintef.thingml.Fork) container, (org.eclipse.emf.ecore.EReference) feature, position, true, frr);
 			}
 		}
 		if (org.sintef.thingml.ThingmlPackage.eINSTANCE.getReceiveMessage().isInstance(container)) {
@@ -533,6 +547,9 @@ public class ThingmlReferenceResolverSwitch implements org.sintef.thingml.resour
 		}
 		if (reference == org.sintef.thingml.ThingmlPackage.eINSTANCE.getTransition_Target()) {
 			return getResolverChain(reference, transitionTargetReferenceResolver);
+		}
+		if (reference == org.sintef.thingml.ThingmlPackage.eINSTANCE.getFork_ForkedInitial()) {
+			return getResolverChain(reference, forkForkedInitialReferenceResolver);
 		}
 		if (reference == org.sintef.thingml.ThingmlPackage.eINSTANCE.getReceiveMessage_Port()) {
 			return getResolverChain(reference, receiveMessagePortReferenceResolver);

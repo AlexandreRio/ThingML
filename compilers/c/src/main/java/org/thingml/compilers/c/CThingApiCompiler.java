@@ -214,7 +214,7 @@ public class CThingApiCompiler extends ThingApiCompiler {
         if (thing.allStateMachines().size() > 0) {// There should be only one if there is one
             StateMachine sm = thing.allStateMachines().get(0);
             builder.append("// Definition of the states:\n");
-            List<State> states = sm.allContainedStates();
+            List<AbstractState> states = sm.allContainedStates();
             for (int i = 0; i < states.size(); i++) {
                 builder.append("#define " + ctx.getStateID(states.get(i)) + " " + i + "\n");
             }

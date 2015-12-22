@@ -152,6 +152,15 @@ public interface ThingmlFactory extends EFactory {
 	Transition createTransition();
 
 	/**
+	 * Returns a new object of class '<em>Fork</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Fork</em>'.
+	 * @generated
+	 */
+	Fork createFork();
+
+	/**
 	 * Returns a new object of class '<em>Internal Transition</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -159,6 +168,15 @@ public interface ThingmlFactory extends EFactory {
 	 * @generated
 	 */
 	InternalTransition createInternalTransition();
+
+	/**
+	 * Returns a new object of class '<em>Final State</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Final State</em>'.
+	 * @generated
+	 */
+	FinalState createFinalState();
 
 	/**
 	 * Returns a new object of class '<em>State</em>'.

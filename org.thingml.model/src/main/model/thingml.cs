@@ -203,15 +203,19 @@ RULES {
 	
 	StateMachine::= !1 "statechart" (#1 name[])? #1 "init" #1 initial[] ("keeps" #1 history[T_HISTORY])? (annotations)* #1 "{" ( !1 properties )* ( !1 "on" #1 "entry" #1 entry )? ( !1 "on" #1 "exit" #1 exit )?  ((!1 substate) | internal)* (!1 region)* !0 "}"  ;
 	
-	State::= "state" #1 name[] (annotations)* #1 "{" ( !1 properties )* ( !1 "on" #1 "entry" entry )? ( !1 "on" "exit" exit )? ( outgoing | internal )* !0 "}"  ;
+	State::= "state" #1 name[] (annotations)* #1 "{" ( !1 properties )* ( !1 "on" #1 "entry" entry )? ( !1 "on" "exit" exit )? ( fork | outgoing | internal )* !0 "}"  ;
 	
-	CompositeState::= "composite" #1 "state" #1 name[] #1 "init" #1 initial[] ("keeps" #1 history[T_HISTORY])? (annotations)* #1 "{" ( !1 properties )* ( !1 "on" #1 "entry" #1 entry )? ( !1 "on" #1 "exit" #1 exit )? ( outgoing | internal | (!1 substate))* (!1 region)* !0 "}"  ;
+	FinalState::= "final state" #1 name[] (annotations)* #1 "{" ( !1 properties )* ( !1 "on" #1 "entry" entry )? !0 "}"  ;
+	
+	CompositeState::= "composite" #1 "state" #1 name[] #1 "init" #1 initial[] ("keeps" #1 history[T_HISTORY])? (annotations)* #1 "{" ( !1 properties )* ( !1 "on" #1 "entry" #1 entry )? ( !1 "on" #1 "exit" #1 exit )? ( fork | outgoing | internal | (!1 substate))* (!1 region)* !0 "}"  ;
 	
 	ParallelRegion ::= "region" #1 name[] #1 "init" #1 initial[] ("keeps" #1 history[T_HISTORY])? (annotations)* #1 "{"(!1 substate)* !0 "}"  ;
 	
-	Transition::= !1 "transition" (#1 name[])? #1 "->" #1 target[] (annotations)* ( !1 "event" #1 event )*  ( !1 "guard" #1 guard)? (!1 "action" #1 action)? (!1 "before" #1 before)? (!1 "after" #1 after)? ;
+	Transition::= !1 "transition" (#1 name[])? #1 "->" #1 target[] (annotations)* ( !1 "event" #1 event )*  ( !1 "guard" #1 guard)? (!1 "action" #1 action)? ;
 
 	InternalTransition ::= !1 "internal" (#1 name[])? (annotations)* ( !1 "event" #1 event )*  ( !1 "guard" #1 guard)? (!1 "action" #1 action)?  ;
+	
+	Fork ::= !1 "fork" (#1 name[])? #1 "->" #1 forkedInitial[] (annotations)* ( !1 "event" #1 event )*  ( !1 "guard" #1 guard)? (!1 "action" #1 action)? ;
 
 	ReceiveMessage ::= (name[] #1 ":" #1)? port[] "?" message[] ;
 	

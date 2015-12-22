@@ -28,23 +28,24 @@
  */
 package org.sintef.thingml.resource.thingml.analysis;
 
+import org.sintef.thingml.AbstractState;
 import org.sintef.thingml.CompositeState;
 import org.sintef.thingml.Port;
 import org.sintef.thingml.State;
 import org.sintef.thingml.constraints.ThingMLHelpers;
 
-public class TransitionTargetReferenceResolver implements org.sintef.thingml.resource.thingml.IThingmlReferenceResolver<org.sintef.thingml.Transition, org.sintef.thingml.State> {
+public class TransitionTargetReferenceResolver implements org.sintef.thingml.resource.thingml.IThingmlReferenceResolver<org.sintef.thingml.Transition, org.sintef.thingml.AbstractState> {
 	
-	private org.sintef.thingml.resource.thingml.analysis.ThingmlDefaultResolverDelegate<org.sintef.thingml.Transition, org.sintef.thingml.State> delegate = new org.sintef.thingml.resource.thingml.analysis.ThingmlDefaultResolverDelegate<org.sintef.thingml.Transition, org.sintef.thingml.State>();
+	private org.sintef.thingml.resource.thingml.analysis.ThingmlDefaultResolverDelegate<org.sintef.thingml.Transition, org.sintef.thingml.AbstractState> delegate = new org.sintef.thingml.resource.thingml.analysis.ThingmlDefaultResolverDelegate<org.sintef.thingml.Transition, org.sintef.thingml.AbstractState>();
 	
-	public void resolve(java.lang.String identifier, org.sintef.thingml.Transition container, org.eclipse.emf.ecore.EReference reference, int position, boolean resolveFuzzy, final org.sintef.thingml.resource.thingml.IThingmlReferenceResolveResult<org.sintef.thingml.State> result) {
+	public void resolve(java.lang.String identifier, org.sintef.thingml.Transition container, org.eclipse.emf.ecore.EReference reference, int position, boolean resolveFuzzy, final org.sintef.thingml.resource.thingml.IThingmlReferenceResolveResult<org.sintef.thingml.AbstractState> result) {
 		State s = ThingMLHelpers.findContainingState(container);
-		for (State p : ThingMLHelpers.findValidTargetState(s, identifier, resolveFuzzy))
+		for (AbstractState p : ThingMLHelpers.findValidTargetState(s, identifier, resolveFuzzy))
 			result.addMapping(p.getName(), p);
 		if (!result.wasResolved()) result.setErrorMessage("Cannot resolve target state " + identifier);
 	}
 	
-	public java.lang.String deResolve(org.sintef.thingml.State element, org.sintef.thingml.Transition container, org.eclipse.emf.ecore.EReference reference) {
+	public java.lang.String deResolve(org.sintef.thingml.AbstractState element, org.sintef.thingml.Transition container, org.eclipse.emf.ecore.EReference reference) {
 		return delegate.deResolve(element, container, reference);
 	}
 	

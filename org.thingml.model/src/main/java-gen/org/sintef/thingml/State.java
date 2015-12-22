@@ -27,21 +27,19 @@ import java.util.Map;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.State#getOutgoing <em>Outgoing</em>}</li>
- *   <li>{@link org.sintef.thingml.State#getIncoming <em>Incoming</em>}</li>
- *   <li>{@link org.sintef.thingml.State#getEntry <em>Entry</em>}</li>
+ *   <li>{@link org.sintef.thingml.State#getFork <em>Fork</em>}</li>
  *   <li>{@link org.sintef.thingml.State#getExit <em>Exit</em>}</li>
- *   <li>{@link org.sintef.thingml.State#getProperties <em>Properties</em>}</li>
  *   <li>{@link org.sintef.thingml.State#getInternal <em>Internal</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.sintef.thingml.ThingmlPackage#getState()
  * @model
  * @generated
  */
-public interface State extends AnnotatedElement {
+public interface State extends AbstractState {
 	/**
 	 * Returns the value of the '<em><b>Outgoing</b></em>' containment reference list.
 	 * The list contents are of type {@link org.sintef.thingml.Transition}.
@@ -61,48 +59,20 @@ public interface State extends AnnotatedElement {
 	EList<Transition> getOutgoing();
 
 	/**
-	 * Returns the value of the '<em><b>Incoming</b></em>' reference list.
-	 * The list contents are of type {@link org.sintef.thingml.Transition}.
-	 * It is bidirectional and its opposite is '{@link org.sintef.thingml.Transition#getTarget <em>Target</em>}'.
+	 * Returns the value of the '<em><b>Fork</b></em>' containment reference list.
+	 * The list contents are of type {@link org.sintef.thingml.Fork}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Incoming</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Fork</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Incoming</em>' reference list.
-	 * @see org.sintef.thingml.ThingmlPackage#getState_Incoming()
-	 * @see org.sintef.thingml.Transition#getTarget
-	 * @model opposite="target"
-	 * @generated
-	 */
-	EList<Transition> getIncoming();
-
-	/**
-	 * Returns the value of the '<em><b>Entry</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Entry</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Entry</em>' containment reference.
-	 * @see #setEntry(Action)
-	 * @see org.sintef.thingml.ThingmlPackage#getState_Entry()
+	 * @return the value of the '<em>Fork</em>' containment reference list.
+	 * @see org.sintef.thingml.ThingmlPackage#getState_Fork()
 	 * @model containment="true"
 	 * @generated
 	 */
-	Action getEntry();
-
-	/**
-	 * Sets the value of the '{@link org.sintef.thingml.State#getEntry <em>Entry</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Entry</em>' containment reference.
-	 * @see #getEntry()
-	 * @generated
-	 */
-	void setEntry(Action value);
+	EList<Fork> getFork();
 
 	/**
 	 * Returns the value of the '<em><b>Exit</b></em>' containment reference.
@@ -131,22 +101,6 @@ public interface State extends AnnotatedElement {
 	void setExit(Action value);
 
 	/**
-	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
-	 * The list contents are of type {@link org.sintef.thingml.Property}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Properties</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Properties</em>' containment reference list.
-	 * @see org.sintef.thingml.ThingmlPackage#getState_Properties()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Property> getProperties();
-
-	/**
 	 * Returns the value of the '<em><b>Internal</b></em>' containment reference list.
 	 * The list contents are of type {@link org.sintef.thingml.InternalTransition}.
 	 * <!-- begin-user-doc -->
@@ -169,14 +123,14 @@ public interface State extends AnnotatedElement {
      * @return
      * @generated NOT
      */
-    List<State> allStates();
+    List<AbstractState> allStates();
 
     /**
      *
      * @return
      * @generated NOT
      */
-    List<State> allStatesWithEntry();
+    List<AbstractState> allStatesWithEntry();
 
     /**
      *
@@ -190,7 +144,7 @@ public interface State extends AnnotatedElement {
      * @return
      * @generated NOT
      */
-    List<State> allContainingStates();
+    List<AbstractState> allContainingStates();
 
     /**
      *
@@ -204,7 +158,7 @@ public interface State extends AnnotatedElement {
      * @return
      * @generated NOT
      */
-    List<State> allValidTargetStates();
+    List<AbstractState> allValidTargetStates();
 
     /**
      *

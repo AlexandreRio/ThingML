@@ -40,11 +40,11 @@ import org.sintef.thingml.ThingmlPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.impl.InstanceRefImpl#getConfig <em>Config</em>}</li>
  *   <li>{@link org.sintef.thingml.impl.InstanceRefImpl#getInstance <em>Instance</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

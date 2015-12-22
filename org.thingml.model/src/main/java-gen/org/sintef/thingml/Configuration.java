@@ -26,6 +26,7 @@ import java.util.*;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.Configuration#getInstances <em>Instances</em>}</li>
  *   <li>{@link org.sintef.thingml.Configuration#getConnectors <em>Connectors</em>}</li>
@@ -33,7 +34,6 @@ import java.util.*;
  *   <li>{@link org.sintef.thingml.Configuration#getConfigs <em>Configs</em>}</li>
  *   <li>{@link org.sintef.thingml.Configuration#getPropassigns <em>Propassigns</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.sintef.thingml.ThingmlPackage#getConfiguration()
  * @model

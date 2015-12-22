@@ -145,10 +145,6 @@ public class ThingmlAdapterFactory extends AdapterFactoryImpl {
 				return createAnnotatedElementAdapter();
 			}
 			@Override
-			public Adapter caseStateMachine(StateMachine object) {
-				return createStateMachineAdapter();
-			}
-			@Override
 			public Adapter caseHandler(Handler object) {
 				return createHandlerAdapter();
 			}
@@ -157,8 +153,24 @@ public class ThingmlAdapterFactory extends AdapterFactoryImpl {
 				return createTransitionAdapter();
 			}
 			@Override
+			public Adapter caseFork(Fork object) {
+				return createForkAdapter();
+			}
+			@Override
 			public Adapter caseInternalTransition(InternalTransition object) {
 				return createInternalTransitionAdapter();
+			}
+			@Override
+			public Adapter caseAbstractState(AbstractState object) {
+				return createAbstractStateAdapter();
+			}
+			@Override
+			public Adapter caseFinalState(FinalState object) {
+				return createFinalStateAdapter();
+			}
+			@Override
+			public Adapter caseRegion(Region object) {
+				return createRegionAdapter();
 			}
 			@Override
 			public Adapter caseState(State object) {
@@ -169,8 +181,8 @@ public class ThingmlAdapterFactory extends AdapterFactoryImpl {
 				return createCompositeStateAdapter();
 			}
 			@Override
-			public Adapter caseRegion(Region object) {
-				return createRegionAdapter();
+			public Adapter caseStateMachine(StateMachine object) {
+				return createStateMachineAdapter();
 			}
 			@Override
 			public Adapter caseParallelRegion(ParallelRegion object) {
@@ -783,6 +795,20 @@ public class ThingmlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.sintef.thingml.Fork <em>Fork</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sintef.thingml.Fork
+	 * @generated
+	 */
+	public Adapter createForkAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.sintef.thingml.InternalTransition <em>Internal Transition</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -793,6 +819,34 @@ public class ThingmlAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createInternalTransitionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sintef.thingml.AbstractState <em>Abstract State</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sintef.thingml.AbstractState
+	 * @generated
+	 */
+	public Adapter createAbstractStateAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.sintef.thingml.FinalState <em>Final State</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.sintef.thingml.FinalState
+	 * @generated
+	 */
+	public Adapter createFinalStateAdapter() {
 		return null;
 	}
 

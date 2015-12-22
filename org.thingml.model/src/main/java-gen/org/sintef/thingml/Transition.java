@@ -23,13 +23,11 @@ package org.sintef.thingml;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.Transition#getTarget <em>Target</em>}</li>
  *   <li>{@link org.sintef.thingml.Transition#getSource <em>Source</em>}</li>
- *   <li>{@link org.sintef.thingml.Transition#getAfter <em>After</em>}</li>
- *   <li>{@link org.sintef.thingml.Transition#getBefore <em>Before</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.sintef.thingml.ThingmlPackage#getTransition()
  * @model
@@ -38,7 +36,7 @@ package org.sintef.thingml;
 public interface Transition extends Handler {
 	/**
 	 * Returns the value of the '<em><b>Target</b></em>' reference.
-	 * It is bidirectional and its opposite is '{@link org.sintef.thingml.State#getIncoming <em>Incoming</em>}'.
+	 * It is bidirectional and its opposite is '{@link org.sintef.thingml.AbstractState#getIncoming <em>Incoming</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Target</em>' reference isn't clear,
@@ -46,13 +44,13 @@ public interface Transition extends Handler {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target</em>' reference.
-	 * @see #setTarget(State)
+	 * @see #setTarget(AbstractState)
 	 * @see org.sintef.thingml.ThingmlPackage#getTransition_Target()
-	 * @see org.sintef.thingml.State#getIncoming
+	 * @see org.sintef.thingml.AbstractState#getIncoming
 	 * @model opposite="incoming" required="true"
 	 * @generated
 	 */
-	State getTarget();
+	AbstractState getTarget();
 
 	/**
 	 * Sets the value of the '{@link org.sintef.thingml.Transition#getTarget <em>Target</em>}' reference.
@@ -62,7 +60,7 @@ public interface Transition extends Handler {
 	 * @see #getTarget()
 	 * @generated
 	 */
-	void setTarget(State value);
+	void setTarget(AbstractState value);
 
 	/**
 	 * Returns the value of the '<em><b>Source</b></em>' container reference.
@@ -91,57 +89,5 @@ public interface Transition extends Handler {
 	 * @generated
 	 */
 	void setSource(State value);
-
-	/**
-	 * Returns the value of the '<em><b>After</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>After</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>After</em>' containment reference.
-	 * @see #setAfter(Action)
-	 * @see org.sintef.thingml.ThingmlPackage#getTransition_After()
-	 * @model containment="true"
-	 * @generated
-	 */
-	Action getAfter();
-
-	/**
-	 * Sets the value of the '{@link org.sintef.thingml.Transition#getAfter <em>After</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>After</em>' containment reference.
-	 * @see #getAfter()
-	 * @generated
-	 */
-	void setAfter(Action value);
-
-	/**
-	 * Returns the value of the '<em><b>Before</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Before</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Before</em>' containment reference.
-	 * @see #setBefore(Action)
-	 * @see org.sintef.thingml.ThingmlPackage#getTransition_Before()
-	 * @model containment="true"
-	 * @generated
-	 */
-	Action getBefore();
-
-	/**
-	 * Sets the value of the '{@link org.sintef.thingml.Transition#getBefore <em>Before</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Before</em>' containment reference.
-	 * @see #getBefore()
-	 * @generated
-	 */
-	void setBefore(Action value);
 
 } // Transition

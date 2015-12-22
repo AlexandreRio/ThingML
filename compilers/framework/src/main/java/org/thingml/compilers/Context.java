@@ -16,25 +16,12 @@
 package org.thingml.compilers;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.sintef.thingml.Configuration;
-import org.sintef.thingml.Connector;
-import org.sintef.thingml.Instance;
-import org.sintef.thingml.Variable;
+import org.sintef.thingml.*;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.*;
-import org.sintef.thingml.Function;
-import org.sintef.thingml.InternalTransition;
-import org.sintef.thingml.Message;
-import org.sintef.thingml.Parameter;
-import org.sintef.thingml.Port;
-import org.sintef.thingml.Region;
-import org.sintef.thingml.State;
-import org.sintef.thingml.StateMachine;
-import org.sintef.thingml.Thing;
-import org.sintef.thingml.Transition;
 
 public class Context {
 
@@ -330,7 +317,7 @@ public class Context {
         }
     }
     
-    public String traceOnEntry(Thing t, Region r, State s) {
+    public String traceOnEntry(Thing t, Region r, AbstractState s) {
         if(!debugTraceWithID) {
             return " (" + t.getName() + "): Enters " + r.getName() + ":" + s.getName();
         } else {

@@ -26,11 +26,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.InstanceRef#getConfig <em>Config</em>}</li>
  *   <li>{@link org.sintef.thingml.InstanceRef#getInstance <em>Instance</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.sintef.thingml.ThingmlPackage#getInstanceRef()
  * @model

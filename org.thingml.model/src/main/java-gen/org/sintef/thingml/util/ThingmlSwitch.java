@@ -60,7 +60,7 @@ public class ThingmlSwitch<T> extends Switch<T> {
 	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @parameter ePackage the package in question.
+	 * @param ePackage the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
@@ -211,17 +211,6 @@ public class ThingmlSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ThingmlPackage.STATE_MACHINE: {
-				StateMachine stateMachine = (StateMachine)theEObject;
-				T result = caseStateMachine(stateMachine);
-				if (result == null) result = caseCompositeState(stateMachine);
-				if (result == null) result = caseState(stateMachine);
-				if (result == null) result = caseRegion(stateMachine);
-				if (result == null) result = caseAnnotatedElement(stateMachine);
-				if (result == null) result = caseThingMLElement(stateMachine);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case ThingmlPackage.HANDLER: {
 				Handler handler = (Handler)theEObject;
 				T result = caseHandler(handler);
@@ -239,6 +228,15 @@ public class ThingmlSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ThingmlPackage.FORK: {
+				Fork fork = (Fork)theEObject;
+				T result = caseFork(fork);
+				if (result == null) result = caseHandler(fork);
+				if (result == null) result = caseAnnotatedElement(fork);
+				if (result == null) result = caseThingMLElement(fork);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case ThingmlPackage.INTERNAL_TRANSITION: {
 				InternalTransition internalTransition = (InternalTransition)theEObject;
 				T result = caseInternalTransition(internalTransition);
@@ -248,9 +246,35 @@ public class ThingmlSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ThingmlPackage.ABSTRACT_STATE: {
+				AbstractState abstractState = (AbstractState)theEObject;
+				T result = caseAbstractState(abstractState);
+				if (result == null) result = caseAnnotatedElement(abstractState);
+				if (result == null) result = caseThingMLElement(abstractState);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ThingmlPackage.FINAL_STATE: {
+				FinalState finalState = (FinalState)theEObject;
+				T result = caseFinalState(finalState);
+				if (result == null) result = caseAbstractState(finalState);
+				if (result == null) result = caseAnnotatedElement(finalState);
+				if (result == null) result = caseThingMLElement(finalState);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ThingmlPackage.REGION: {
+				Region region = (Region)theEObject;
+				T result = caseRegion(region);
+				if (result == null) result = caseAnnotatedElement(region);
+				if (result == null) result = caseThingMLElement(region);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case ThingmlPackage.STATE: {
 				State state = (State)theEObject;
 				T result = caseState(state);
+				if (result == null) result = caseAbstractState(state);
 				if (result == null) result = caseAnnotatedElement(state);
 				if (result == null) result = caseThingMLElement(state);
 				if (result == null) result = defaultCase(theEObject);
@@ -261,16 +285,21 @@ public class ThingmlSwitch<T> extends Switch<T> {
 				T result = caseCompositeState(compositeState);
 				if (result == null) result = caseState(compositeState);
 				if (result == null) result = caseRegion(compositeState);
+				if (result == null) result = caseAbstractState(compositeState);
 				if (result == null) result = caseAnnotatedElement(compositeState);
 				if (result == null) result = caseThingMLElement(compositeState);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ThingmlPackage.REGION: {
-				Region region = (Region)theEObject;
-				T result = caseRegion(region);
-				if (result == null) result = caseAnnotatedElement(region);
-				if (result == null) result = caseThingMLElement(region);
+			case ThingmlPackage.STATE_MACHINE: {
+				StateMachine stateMachine = (StateMachine)theEObject;
+				T result = caseStateMachine(stateMachine);
+				if (result == null) result = caseCompositeState(stateMachine);
+				if (result == null) result = caseState(stateMachine);
+				if (result == null) result = caseRegion(stateMachine);
+				if (result == null) result = caseAbstractState(stateMachine);
+				if (result == null) result = caseAnnotatedElement(stateMachine);
+				if (result == null) result = caseThingMLElement(stateMachine);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1189,6 +1218,21 @@ public class ThingmlSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Fork</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Fork</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseFork(Fork object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Internal Transition</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1200,6 +1244,36 @@ public class ThingmlSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseInternalTransition(InternalTransition object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract State</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract State</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAbstractState(AbstractState object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Final State</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Final State</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseFinalState(FinalState object) {
 		return null;
 	}
 

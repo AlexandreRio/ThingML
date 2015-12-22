@@ -84,7 +84,7 @@ public class PlantUMLThingImplCompiler extends FSMBasedThingImplCompiler {
         builder.append("@startuml\n");
         builder.append("[*] --> " + sm.getName() + "\n");
         builder.append("state " + sm.getName() + "{\n");
-        for (State s : sm.getSubstate()) {
+        for (AbstractState s : sm.getSubstate()) {
             generateState(s, builder, ctx);
         }
         builder.append("[*] --> " + sm.getInitial().getName() + "\n");
@@ -102,7 +102,7 @@ public class PlantUMLThingImplCompiler extends FSMBasedThingImplCompiler {
 
     protected void generateCompositeState(CompositeState c, StringBuilder builder, Context ctx) {
         builder.append("state " + c.getName() + "{\n");
-        for (State s : c.getSubstate()) {
+        for (AbstractState s : c.getSubstate()) {
             generateState(s, builder, ctx);
         }
         builder.append("[*] --> " + c.getInitial().getName() + "\n");
@@ -127,7 +127,7 @@ public class PlantUMLThingImplCompiler extends FSMBasedThingImplCompiler {
     public void generateRegion(Region r, StringBuilder builder, Context ctx) {
         builder.append("--\n");
         builder.append("[*] --> " + r.getInitial().getName() + "\n");
-        for (State s : r.getSubstate()) {
+        for (AbstractState s : r.getSubstate()) {
             generateState(s, builder, ctx);
         }
     }

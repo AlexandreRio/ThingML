@@ -80,11 +80,13 @@ public class ThingmlFactoryImpl extends EFactoryImpl implements ThingmlFactory {
 			case ThingmlPackage.ENUMERATION: return createEnumeration();
 			case ThingmlPackage.PRIMITIVE_TYPE: return createPrimitiveType();
 			case ThingmlPackage.ENUMERATION_LITERAL: return createEnumerationLiteral();
-			case ThingmlPackage.STATE_MACHINE: return createStateMachine();
 			case ThingmlPackage.TRANSITION: return createTransition();
+			case ThingmlPackage.FORK: return createFork();
 			case ThingmlPackage.INTERNAL_TRANSITION: return createInternalTransition();
+			case ThingmlPackage.FINAL_STATE: return createFinalState();
 			case ThingmlPackage.STATE: return createState();
 			case ThingmlPackage.COMPOSITE_STATE: return createCompositeState();
+			case ThingmlPackage.STATE_MACHINE: return createStateMachine();
 			case ThingmlPackage.PARALLEL_REGION: return createParallelRegion();
 			case ThingmlPackage.ACTION_BLOCK: return createActionBlock();
 			case ThingmlPackage.EXTERN_STATEMENT: return createExternStatement();
@@ -287,9 +289,29 @@ public class ThingmlFactoryImpl extends EFactoryImpl implements ThingmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Fork createFork() {
+		ForkImpl fork = new ForkImpl();
+		return fork;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public InternalTransition createInternalTransition() {
 		InternalTransitionImpl internalTransition = new InternalTransitionImpl();
 		return internalTransition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public FinalState createFinalState() {
+		FinalStateImpl finalState = new FinalStateImpl();
+		return finalState;
 	}
 
 	/**

@@ -57,8 +57,8 @@ public class AutotransitionCycles extends Rule {
     public void check(Configuration cfg, Checker checker) {
         for(Thing thing : cfg.allThings()) {
             for(StateMachine sm : thing.allStateMachines()) {
-                Set<State> vertices = new HashSet<State>();
-                for(State s : sm.allContainedStates()) {
+                Set<AbstractState> vertices = new HashSet<AbstractState>();
+                for(AbstractState s : sm.allContainedStates()) {
                     vertices.add(s);
                 }
                 Tarjan<State> t = new Tarjan(cfg, vertices);

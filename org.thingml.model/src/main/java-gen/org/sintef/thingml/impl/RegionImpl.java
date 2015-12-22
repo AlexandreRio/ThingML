@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.sintef.thingml.AbstractState;
 import org.sintef.thingml.Region;
 import org.sintef.thingml.State;
 import org.sintef.thingml.ThingmlPackage;
@@ -42,12 +43,12 @@ import org.sintef.thingml.*;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.impl.RegionImpl#getSubstate <em>Substate</em>}</li>
  *   <li>{@link org.sintef.thingml.impl.RegionImpl#getInitial <em>Initial</em>}</li>
  *   <li>{@link org.sintef.thingml.impl.RegionImpl#isHistory <em>History</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -60,7 +61,7 @@ public abstract class RegionImpl extends AnnotatedElementImpl implements Region 
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<State> substate;
+	protected EList<AbstractState> substate;
 
 	/**
 	 * The cached value of the '{@link #getInitial() <em>Initial</em>}' reference.
@@ -116,9 +117,9 @@ public abstract class RegionImpl extends AnnotatedElementImpl implements Region 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<State> getSubstate() {
+	public EList<AbstractState> getSubstate() {
 		if (substate == null) {
-			substate = new EObjectContainmentEList<State>(State.class, this, ThingmlPackage.REGION__SUBSTATE);
+			substate = new EObjectContainmentEList<AbstractState>(AbstractState.class, this, ThingmlPackage.REGION__SUBSTATE);
 		}
 		return substate;
 	}
@@ -226,7 +227,7 @@ public abstract class RegionImpl extends AnnotatedElementImpl implements Region 
 		switch (featureID) {
 			case ThingmlPackage.REGION__SUBSTATE:
 				getSubstate().clear();
-				getSubstate().addAll((Collection<? extends State>)newValue);
+				getSubstate().addAll((Collection<? extends AbstractState>)newValue);
 				return;
 			case ThingmlPackage.REGION__INITIAL:
 				setInitial((State)newValue);
@@ -300,13 +301,13 @@ public abstract class RegionImpl extends AnnotatedElementImpl implements Region 
      * @return
      * @generated NOT
      */
-    public List<State> allContainedStates() {
-        final List<State> result = new ArrayList<State>();
+    public List<AbstractState> allContainedStates() {
+        final List<AbstractState> result = new ArrayList<AbstractState>();
         for(Region r : allContainedRegions()) {
-            if (r instanceof State) {
-                result.add((State)r);
+            if (r instanceof AbstractState) {
+                result.add((AbstractState)r);
             }
-            for(State s : r.getSubstate()) {
+            for(AbstractState s : r.getSubstate()) {
                 if (! (s instanceof Region)) {
                     result.add(s);
                 }
@@ -328,7 +329,7 @@ public abstract class RegionImpl extends AnnotatedElementImpl implements Region 
                 result.addAll(r.allContainedRegions());
             }
         }
-        for (State s : getSubstate()) {
+        for (AbstractState s : getSubstate()) {
             if (s instanceof Region) {
                 result.addAll(((Region)s).allContainedRegions());
             }
@@ -343,7 +344,7 @@ public abstract class RegionImpl extends AnnotatedElementImpl implements Region 
      */
     public List<Property> allContainedProperties() {
         final List<Property> result = new ArrayList<Property>();
-        for(State s : allContainedStates()) {
+        for(AbstractState s : allContainedStates()) {
             result.addAll(s.getProperties());
         }
         return result;
@@ -373,7 +374,7 @@ public abstract class RegionImpl extends AnnotatedElementImpl implements Region 
      */
     public List<CompositeState> allContainedCompositeStates() {
         final List<CompositeState> result = new ArrayList<CompositeState>();
-        for(State s : allContainedStates()) {
+        for(AbstractState s : allContainedStates()) {
             if (s instanceof CompositeState) {
                 result.add((CompositeState)s);
             }
@@ -386,8 +387,8 @@ public abstract class RegionImpl extends AnnotatedElementImpl implements Region 
      * @return
      * @generated NOT
      */
-    public List<State> allContainedSimpleStates() {
-        final List<State> result = allContainedStates();
+    public List<AbstractState> allContainedSimpleStates() {
+        final List<AbstractState> result = allContainedStates();
         result.removeAll(allContainedCompositeStates());
         return result;
     }

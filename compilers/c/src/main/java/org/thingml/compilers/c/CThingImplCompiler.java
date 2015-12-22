@@ -326,7 +326,7 @@ public class CThingImplCompiler extends FSMBasedThingImplCompiler {
             builder.append("break;\n");
         }
 
-        for (State s : sm.allContainedSimpleStates()) {
+        for (AbstractState s : sm.allContainedSimpleStates()) {
             builder.append("case " + ctx.getStateID(s) + ":\n");
             //if(ctx.isToBeDebugged(ctx.getCurrentConfiguration(), thing, s)) {
             if(debugProfile.isDebugBehavior()) {
@@ -368,17 +368,19 @@ public class CThingImplCompiler extends FSMBasedThingImplCompiler {
 
         }
 
-        for (State s : sm.allContainedSimpleStates()) { // just a leaf state: execute exit actions
-            builder.append("case " + ctx.getStateID(s) + ":\n");
-            if (s.getExit() != null) ctx.getCompiler().getThingActionCompiler().generate(s.getExit(), builder, ctx);
-            
-            
-            if(debugProfile.isDebugBehavior()) {
-                builder.append(thing.getName() + "_print_debug(" + ctx.getInstanceVarName() + ", \""
-                        + ctx.traceOnExit(thing, sm, s) + "\\n\");\n");
+        for (AbstractState s : sm.allContainedSimpleStates()) { // just a leaf state: execute exit actions
+            if (s instanceof State) {
+                builder.append("case " + ctx.getStateID(s) + ":\n");
+                if (((State)s).getExit() != null) ctx.getCompiler().getThingActionCompiler().generate(((State)s).getExit(), builder, ctx);
+
+
+                if (debugProfile.isDebugBehavior()) {
+                    builder.append(thing.getName() + "_print_debug(" + ctx.getInstanceVarName() + ", \""
+                            + ctx.traceOnExit(thing, sm, (State)s) + "\\n\");\n");
+                }
+
+                builder.append("break;\n");
             }
-            
-            builder.append("break;\n");
         }
 
         builder.append("default: break;\n");
@@ -483,7 +485,7 @@ public class CThingImplCompiler extends FSMBasedThingImplCompiler {
                                 + ctx.traceTransition(thing, et) + "\\n\");\n");
                 }
                 
-                ctx.getCompiler().getThingActionCompiler().generate(et.getBefore(), builder, ctx);
+                //ctx.getCompiler().getThingActionCompiler().generate(et.getBefore(), builder, ctx);
 
                 // Execute the exit actions for current states (starting at the deepest)
                 builder.append(thing.allStateMachines().get(0).qname("_") + "_OnExit(" + ctx.getStateID(et.getSource()) + ", " + ctx.getInstanceVarName() + ");\n");
@@ -496,7 +498,7 @@ public class CThingImplCompiler extends FSMBasedThingImplCompiler {
                 // Enter the target state and initialize its children
                 builder.append(thing.allStateMachines().get(0).qname("_") + "_OnEntry(" + ctx.getStateID(et.getTarget()) + ", " + ctx.getInstanceVarName() + ");\n");
 
-                ctx.getCompiler().getThingActionCompiler().generate(et.getAfter(), builder, ctx);
+                //ctx.getCompiler().getThingActionCompiler().generate(et.getAfter(), builder, ctx);
                 
                 //New Empty Event Method
                 builder.append("return 1;\n");
@@ -519,7 +521,7 @@ public class CThingImplCompiler extends FSMBasedThingImplCompiler {
             builder.append("uint8_t " + ctx.getStateVarName(r) + "_event_consumed = 0;\n");
 
             ArrayList<State> states = new ArrayList<State>();
-            for (State s : r.getSubstate()) if (s.canHandle(port, msg)) states.add(s);
+            for (AbstractState s : r.getSubstate()) if (s instanceof State && ((State)s).canHandle(port, msg)) states.add((State)s);
             for (State s : states) {
                 if (states.get(0) != s) builder.append("else ");
                 builder.append("if (" + ctx.getInstanceVarName() + "->" + ctx.getStateVarName(r) + " == " + ctx.getStateID(s) + ") {\n"); // s is the current state
@@ -592,7 +594,7 @@ public class CThingImplCompiler extends FSMBasedThingImplCompiler {
                                 + ctx.traceTransition(thing, et, port, msg) + "\\n\");\n");
                 }
 
-                ctx.getCompiler().getThingActionCompiler().generate(et.getBefore(), builder, ctx);
+                //ctx.getCompiler().getThingActionCompiler().generate(et.getBefore(), builder, ctx);
 
                 // Execute the exit actions for current states (starting at the deepest)
                 builder.append(thing.allStateMachines().get(0).qname("_") + "_OnExit(" + ctx.getStateID(et.getSource()) + ", " + ctx.getInstanceVarName() + ");\n");
@@ -605,7 +607,7 @@ public class CThingImplCompiler extends FSMBasedThingImplCompiler {
                 // Enter the target state and initialize its children
                 builder.append(thing.allStateMachines().get(0).qname("_") + "_OnEntry(" + ctx.getStateID(et.getTarget()) + ", " + ctx.getInstanceVarName() + ");\n");
 
-                ctx.getCompiler().getThingActionCompiler().generate(et.getAfter(), builder, ctx);
+                //ctx.getCompiler().getThingActionCompiler().generate(et.getAfter(), builder, ctx);
 
                 // The event has been consumed
                 if (r != null) builder.append(ctx.getStateVarName(r) + "_event_consumed = 1;\n");
@@ -619,7 +621,7 @@ public class CThingImplCompiler extends FSMBasedThingImplCompiler {
         for (Region r : cs.directSubRegions()) {
 
             ArrayList<State> states = new ArrayList<State>();
-            for (State s : r.getSubstate()) if (s.hasEmptyHandlers()) states.add(s);
+            for (AbstractState s : r.getSubstate()) if (s instanceof State && ((State)s).hasEmptyHandlers()) states.add((State)s);
             for (State s : states) {
                 if (states.get(0) != s) builder.append("else ");
                 builder.append("if (" + ctx.getInstanceVarName() + "->" + ctx.getStateVarName(r) + " == " + ctx.getStateID(s) + ") {\n"); // s is the current state

@@ -29,8 +29,6 @@ import java.util.Set;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>State Machine</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */
@@ -63,7 +61,7 @@ public class StateMachineImpl extends CompositeStateImpl implements StateMachine
      * @generated NOT
      */
     @Override
-    public List<State> allContainedStates() {
+    public List<AbstractState> allContainedStates() {
         return super.allContainedStates();
     }
 
@@ -113,7 +111,7 @@ public class StateMachineImpl extends CompositeStateImpl implements StateMachine
      * @generated NOT
      */
     @Override
-    public List<State> allContainedSimpleStates() {
+    public List<AbstractState> allContainedSimpleStates() {
         return super.allContainedSimpleStates();
     }
 

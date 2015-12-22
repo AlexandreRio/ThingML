@@ -27,12 +27,12 @@ import java.util.Set;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.Region#getSubstate <em>Substate</em>}</li>
  *   <li>{@link org.sintef.thingml.Region#getInitial <em>Initial</em>}</li>
  *   <li>{@link org.sintef.thingml.Region#isHistory <em>History</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.sintef.thingml.ThingmlPackage#getRegion()
  * @model abstract="true"
@@ -41,7 +41,7 @@ import java.util.Set;
 public interface Region extends AnnotatedElement {
 	/**
 	 * Returns the value of the '<em><b>Substate</b></em>' containment reference list.
-	 * The list contents are of type {@link org.sintef.thingml.State}.
+	 * The list contents are of type {@link org.sintef.thingml.AbstractState}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Substate</em>' containment reference list isn't clear,
@@ -53,7 +53,7 @@ public interface Region extends AnnotatedElement {
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<State> getSubstate();
+	EList<AbstractState> getSubstate();
 
 	/**
 	 * Returns the value of the '<em><b>Initial</b></em>' reference.
@@ -114,7 +114,7 @@ public interface Region extends AnnotatedElement {
      * @return
      * @generated NOT
      */
-    List<State> allContainedStates();
+    List<AbstractState> allContainedStates();
 
     /**
      *
@@ -149,7 +149,7 @@ public interface Region extends AnnotatedElement {
      * @return
      * @generated NOT
      */
-    List<State> allContainedSimpleStates();
+    List<AbstractState> allContainedSimpleStates();
 
     /**
      *

@@ -41,6 +41,7 @@ import org.sintef.thingml.*;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.impl.ConfigurationImpl#getInstances <em>Instances</em>}</li>
  *   <li>{@link org.sintef.thingml.impl.ConfigurationImpl#getConnectors <em>Connectors</em>}</li>
@@ -48,7 +49,6 @@ import org.sintef.thingml.*;
  *   <li>{@link org.sintef.thingml.impl.ConfigurationImpl#getConfigs <em>Configs</em>}</li>
  *   <li>{@link org.sintef.thingml.impl.ConfigurationImpl#getPropassigns <em>Propassigns</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

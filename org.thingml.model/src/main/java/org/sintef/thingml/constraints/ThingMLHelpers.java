@@ -489,11 +489,11 @@ public class ThingMLHelpers {
 	 * Resolution for State Machines, States, Regions
 	 * ***********************************************************/
 	
-	public static ArrayList<State> allContainingStates(State state) {
-		ArrayList<State> result = new ArrayList<State>();
+	public static ArrayList<AbstractState> allContainingStates(State state) {
+		ArrayList<AbstractState> result = new ArrayList<AbstractState>();
 		EObject current = state;
 		while(current != null) {
-			if (current instanceof State) result.add((State)current);
+			if (current instanceof State) result.add((AbstractState)current);
 			current = current.eContainer();
 		}
 		return result;
@@ -502,7 +502,7 @@ public class ThingMLHelpers {
 	public static ArrayList<Property> allProperties(State state) {
 		ArrayList<Property> result = new ArrayList<Property>();
 		// Properties from the states
-		for (State s : allContainingStates(state)) {
+		for (AbstractState s : allContainingStates(state)) {
 			result.addAll(s.getProperties());
 		}
 		// Properties from the thing
@@ -575,16 +575,16 @@ public class ThingMLHelpers {
 		return result;
 	}
 
-	public static ArrayList<State> allValidTargetStates(State state) {
-		ArrayList<State> result = new ArrayList<State>();
+	public static ArrayList<AbstractState> allValidTargetStates(State state) {
+		ArrayList<AbstractState> result = new ArrayList<AbstractState>();
 		if (state instanceof CompositeState) result.addAll(findContainingRegion(state.eContainer()).getSubstate());
 		else result.addAll(findContainingRegion(state).getSubstate());
 		return result;
 	}
 	
-	public static ArrayList<State> findValidTargetState(State state, String name, boolean fuzzy) {
-		ArrayList<State> result = new ArrayList<State>();
-		for (State t : allValidTargetStates(state)) {
+	public static ArrayList<AbstractState> findValidTargetState(State state, String name, boolean fuzzy) {
+		ArrayList<AbstractState> result = new ArrayList<AbstractState>();
+		for (AbstractState t : allValidTargetStates(state)) {
 			if (t.getName().startsWith(name)) {
 				if (fuzzy) result.add(t);
 				else if (t.getName().equals(name)) result.add(t);

@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.sintef.thingml.Action;
+import org.sintef.thingml.Fork;
 import org.sintef.thingml.InternalTransition;
 import org.sintef.thingml.Property;
 import org.sintef.thingml.State;
@@ -48,19 +49,17 @@ import org.sintef.thingml.constraints.ThingMLHelpers;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.sintef.thingml.impl.StateImpl#getOutgoing <em>Outgoing</em>}</li>
- *   <li>{@link org.sintef.thingml.impl.StateImpl#getIncoming <em>Incoming</em>}</li>
- *   <li>{@link org.sintef.thingml.impl.StateImpl#getEntry <em>Entry</em>}</li>
+ *   <li>{@link org.sintef.thingml.impl.StateImpl#getFork <em>Fork</em>}</li>
  *   <li>{@link org.sintef.thingml.impl.StateImpl#getExit <em>Exit</em>}</li>
- *   <li>{@link org.sintef.thingml.impl.StateImpl#getProperties <em>Properties</em>}</li>
  *   <li>{@link org.sintef.thingml.impl.StateImpl#getInternal <em>Internal</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class StateImpl extends AnnotatedElementImpl implements State {
+public class StateImpl extends AbstractStateImpl implements State {
 	/**
 	 * The cached value of the '{@link #getOutgoing() <em>Outgoing</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -72,24 +71,14 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 	protected EList<Transition> outgoing;
 
 	/**
-	 * The cached value of the '{@link #getIncoming() <em>Incoming</em>}' reference list.
+	 * The cached value of the '{@link #getFork() <em>Fork</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIncoming()
+	 * @see #getFork()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Transition> incoming;
-
-	/**
-	 * The cached value of the '{@link #getEntry() <em>Entry</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEntry()
-	 * @generated
-	 * @ordered
-	 */
-	protected Action entry;
+	protected EList<Fork> fork;
 
 	/**
 	 * The cached value of the '{@link #getExit() <em>Exit</em>}' containment reference.
@@ -100,16 +89,6 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 	 * @ordered
 	 */
 	protected Action exit;
-
-	/**
-	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProperties()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Property> properties;
 
 	/**
 	 * The cached value of the '{@link #getInternal() <em>Internal</em>}' containment reference list.
@@ -157,54 +136,11 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Transition> getIncoming() {
-		if (incoming == null) {
-			incoming = new EObjectWithInverseResolvingEList<Transition>(Transition.class, this, ThingmlPackage.STATE__INCOMING, ThingmlPackage.TRANSITION__TARGET);
+	public EList<Fork> getFork() {
+		if (fork == null) {
+			fork = new EObjectContainmentEList<Fork>(Fork.class, this, ThingmlPackage.STATE__FORK);
 		}
-		return incoming;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Action getEntry() {
-		return entry;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetEntry(Action newEntry, NotificationChain msgs) {
-		Action oldEntry = entry;
-		entry = newEntry;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ThingmlPackage.STATE__ENTRY, oldEntry, newEntry);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setEntry(Action newEntry) {
-		if (newEntry != entry) {
-			NotificationChain msgs = null;
-			if (entry != null)
-				msgs = ((InternalEObject)entry).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ThingmlPackage.STATE__ENTRY, null, msgs);
-			if (newEntry != null)
-				msgs = ((InternalEObject)newEntry).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ThingmlPackage.STATE__ENTRY, null, msgs);
-			msgs = basicSetEntry(newEntry, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ThingmlPackage.STATE__ENTRY, newEntry, newEntry));
+		return fork;
 	}
 
 	/**
@@ -255,18 +191,6 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Property> getProperties() {
-		if (properties == null) {
-			properties = new EObjectContainmentEList<Property>(Property.class, this, ThingmlPackage.STATE__PROPERTIES);
-		}
-		return properties;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<InternalTransition> getInternal() {
 		if (internal == null) {
 			internal = new EObjectContainmentEList<InternalTransition>(InternalTransition.class, this, ThingmlPackage.STATE__INTERNAL);
@@ -285,8 +209,6 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 		switch (featureID) {
 			case ThingmlPackage.STATE__OUTGOING:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getOutgoing()).basicAdd(otherEnd, msgs);
-			case ThingmlPackage.STATE__INCOMING:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getIncoming()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -301,14 +223,10 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 		switch (featureID) {
 			case ThingmlPackage.STATE__OUTGOING:
 				return ((InternalEList<?>)getOutgoing()).basicRemove(otherEnd, msgs);
-			case ThingmlPackage.STATE__INCOMING:
-				return ((InternalEList<?>)getIncoming()).basicRemove(otherEnd, msgs);
-			case ThingmlPackage.STATE__ENTRY:
-				return basicSetEntry(null, msgs);
+			case ThingmlPackage.STATE__FORK:
+				return ((InternalEList<?>)getFork()).basicRemove(otherEnd, msgs);
 			case ThingmlPackage.STATE__EXIT:
 				return basicSetExit(null, msgs);
-			case ThingmlPackage.STATE__PROPERTIES:
-				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 			case ThingmlPackage.STATE__INTERNAL:
 				return ((InternalEList<?>)getInternal()).basicRemove(otherEnd, msgs);
 		}
@@ -325,14 +243,10 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 		switch (featureID) {
 			case ThingmlPackage.STATE__OUTGOING:
 				return getOutgoing();
-			case ThingmlPackage.STATE__INCOMING:
-				return getIncoming();
-			case ThingmlPackage.STATE__ENTRY:
-				return getEntry();
+			case ThingmlPackage.STATE__FORK:
+				return getFork();
 			case ThingmlPackage.STATE__EXIT:
 				return getExit();
-			case ThingmlPackage.STATE__PROPERTIES:
-				return getProperties();
 			case ThingmlPackage.STATE__INTERNAL:
 				return getInternal();
 		}
@@ -352,19 +266,12 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 				getOutgoing().clear();
 				getOutgoing().addAll((Collection<? extends Transition>)newValue);
 				return;
-			case ThingmlPackage.STATE__INCOMING:
-				getIncoming().clear();
-				getIncoming().addAll((Collection<? extends Transition>)newValue);
-				return;
-			case ThingmlPackage.STATE__ENTRY:
-				setEntry((Action)newValue);
+			case ThingmlPackage.STATE__FORK:
+				getFork().clear();
+				getFork().addAll((Collection<? extends Fork>)newValue);
 				return;
 			case ThingmlPackage.STATE__EXIT:
 				setExit((Action)newValue);
-				return;
-			case ThingmlPackage.STATE__PROPERTIES:
-				getProperties().clear();
-				getProperties().addAll((Collection<? extends Property>)newValue);
 				return;
 			case ThingmlPackage.STATE__INTERNAL:
 				getInternal().clear();
@@ -385,17 +292,11 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 			case ThingmlPackage.STATE__OUTGOING:
 				getOutgoing().clear();
 				return;
-			case ThingmlPackage.STATE__INCOMING:
-				getIncoming().clear();
-				return;
-			case ThingmlPackage.STATE__ENTRY:
-				setEntry((Action)null);
+			case ThingmlPackage.STATE__FORK:
+				getFork().clear();
 				return;
 			case ThingmlPackage.STATE__EXIT:
 				setExit((Action)null);
-				return;
-			case ThingmlPackage.STATE__PROPERTIES:
-				getProperties().clear();
 				return;
 			case ThingmlPackage.STATE__INTERNAL:
 				getInternal().clear();
@@ -414,14 +315,10 @@ public class StateImpl extends AnnotatedElementImpl implements State {
 		switch (featureID) {
 			case ThingmlPackage.STATE__OUTGOING:
 				return outgoing != null && !outgoing.isEmpty();
-			case ThingmlPackage.STATE__INCOMING:
-				return incoming != null && !incoming.isEmpty();
-			case ThingmlPackage.STATE__ENTRY:
-				return entry != null;
+			case ThingmlPackage.STATE__FORK:
+				return fork != null && !fork.isEmpty();
 			case ThingmlPackage.STATE__EXIT:
 				return exit != null;
-			case ThingmlPackage.STATE__PROPERTIES:
-				return properties != null && !properties.isEmpty();
 			case ThingmlPackage.STATE__INTERNAL:
 				return internal != null && !internal.isEmpty();
 		}
@@ -434,11 +331,11 @@ public class StateImpl extends AnnotatedElementImpl implements State {
      * @return
      * @generated NOT
      */
-    public List<State> allStates() {
+    public List<AbstractState> allStates() {
         if (this instanceof CompositeState) {
             return ((CompositeState)this).allContainedStates();
         } else {
-            return Collections.singletonList((State)this);
+            return Collections.singletonList((AbstractState)this);
         }
     }
 
@@ -447,9 +344,9 @@ public class StateImpl extends AnnotatedElementImpl implements State {
      * @return
      * @generated NOT
      */
-    public List<State> allStatesWithEntry() {
-        final List<State> result = new ArrayList<State>();
-        for(State s : allStates()) {
+    public List<AbstractState> allStatesWithEntry() {
+        final List<AbstractState> result = new ArrayList<AbstractState>();
+        for(AbstractState s : allStates()) {
             if (s.getEntry() != null)
                 result.add(s);
         }
@@ -463,9 +360,9 @@ public class StateImpl extends AnnotatedElementImpl implements State {
      */
     public List<State> allStatesWithExit() {
         final List<State> result = new ArrayList<State>();
-        for(State s : allStates()) {
-            if (s.getExit() != null)
-                result.add(s);
+        for(AbstractState s : allStates()) {
+            if (s instanceof State && ((State)s).getExit() != null)
+                result.add((State)s);
         }
         return result;
     }
@@ -475,7 +372,7 @@ public class StateImpl extends AnnotatedElementImpl implements State {
      * @return
      * @generated NOT
      */
-    public List<State> allContainingStates() {
+    public List<AbstractState> allContainingStates() {
         return ThingMLHelpers.allContainingStates(this);
     }
 
@@ -493,7 +390,7 @@ public class StateImpl extends AnnotatedElementImpl implements State {
      * @return
      * @generated NOT
      */
-    public List<State> allValidTargetStates() {
+    public List<AbstractState> allValidTargetStates() {
         return ThingMLHelpers.allValidTargetStates(this);
     }
 
@@ -520,13 +417,14 @@ public class StateImpl extends AnnotatedElementImpl implements State {
      */
     public Map<Port, Map<Message, List<Handler>>> allMessageHandlers() {
         Map<Port, Map<Message, List<Handler>>> result = new HashMap<Port, Map<Message, List<Handler>>>();
-        for(State s : allStates()) {
+        for(AbstractState s : allStates()) {
+        	if (s instanceof State) {
             //println("Processisng state " + s.getName)
             List<Handler> handlers = new ArrayList<Handler>();
-            for(Transition t : s.getOutgoing()){
+            for(Transition t : ((State)s).getOutgoing()){
                 handlers.add(t);
             }
-            for(InternalTransition i : s.getInternal()) {
+            for(InternalTransition i : ((State)s).getInternal()) {
                 handlers.add(i);
             }
             for(Handler t : handlers){
@@ -548,6 +446,7 @@ public class StateImpl extends AnnotatedElementImpl implements State {
                     }
                 }
             }
+        }
         }
         return result;
     }
@@ -583,12 +482,13 @@ public class StateImpl extends AnnotatedElementImpl implements State {
      */
     public List<Handler> allEmptyHandlers() {
         final List<Handler> result = new ArrayList<Handler>();
-        for(State s : allStates()){
+        for(AbstractState s : allStates()){
+        	if (s instanceof State) {
             List<Handler> handlers = new ArrayList<Handler>();
-            for(Transition t : s.getOutgoing()){
+            for(Transition t : ((State)s).getOutgoing()){
                 handlers.add(t);
             }
-            for(InternalTransition i : s.getInternal()) {
+            for(InternalTransition i : ((State)s).getInternal()) {
                 handlers.add(i);
             }
             for(Handler t : handlers) {
@@ -596,6 +496,7 @@ public class StateImpl extends AnnotatedElementImpl implements State {
                     result.add(t);
                 }
             }
+        }
         }
         return result;
     }

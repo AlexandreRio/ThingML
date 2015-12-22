@@ -15,16 +15,11 @@
  */
 package org.thingml.compilers.java;
 
-import org.apache.commons.io.IOUtils;
 import org.sintef.thingml.*;
 import org.thingml.compilers.Context;
 import org.thingml.compilers.DebugProfile;
 import org.thingml.compilers.thing.common.FSMBasedThingImplCompiler;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -516,7 +511,7 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
         final String actionName = (c.getEntry() != null || c.getExit() != null) ? ctx.firstToUpper(c.qname("_")) + "Action" : "NullStateAction";
 
         builder.append("final List<AtomicState> states_" + c.qname("_") + " = new ArrayList<AtomicState>();\n");
-        for (State s : c.getSubstate()) {
+        for (AbstractState s : c.getSubstate()) {
             if (s instanceof CompositeState) {
                 CompositeState cs = (CompositeState) s;
                 builder.append("final CompositeState state_" + cs.qname("_") + " = build" + cs.qname("_") + "();\n");
@@ -532,12 +527,14 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
         }
 
         builder.append("final List<Handler> transitions_" + c.qname("_") + " = new ArrayList<Handler>();\n");
-        for (State s : c.getSubstate()) {
-            for (InternalTransition i : s.getInternal()) {
-                buildTransitionsHelper(builder, ctx, s, i);
-            }
-            for (Transition t : s.getOutgoing()) {
-                buildTransitionsHelper(builder, ctx, s, t);
+        for (AbstractState s : c.getSubstate()) {
+            if (s instanceof State) {
+                for (InternalTransition i : ((State)s).getInternal()) {
+                    buildTransitionsHelper(builder, ctx, (State)s, i);
+                }
+                for (Transition t : ((State)s).getOutgoing()) {
+                    buildTransitionsHelper(builder, ctx, (State)s, t);
+                }
             }
         }
 
@@ -634,7 +631,7 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
 
     private void buildRegion(Region r, StringBuilder builder, Context ctx) {
         builder.append("final List<AtomicState> states_" + r.qname("_") + " = new ArrayList<AtomicState>();\n");
-        for (State s : r.getSubstate()) {
+        for (AbstractState s : r.getSubstate()) {
             if (s instanceof CompositeState) {
                 builder.append("CompositeState state_" + s.qname("_") + " = build" + s.qname("_") + "();\n");
                 builder.append("states_" + r.qname("_") + ".add(state_" + s.qname("_") + ");\n");
@@ -643,12 +640,14 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
             }
         }
         builder.append("final List<Handler> transitions_" + r.qname("_") + " = new ArrayList<Handler>();\n");
-        for (State s : r.getSubstate()) {
-            for (InternalTransition i : s.getInternal()) {
-                buildTransitionsHelper(builder, ctx, s, i);
-            }
-            for (Transition t : s.getOutgoing()) {
-                buildTransitionsHelper(builder, ctx, s, t);
+        for (AbstractState s : r.getSubstate()) {
+            if (s instanceof State) {
+                for (InternalTransition i : ((State)s).getInternal()) {
+                    buildTransitionsHelper(builder, ctx, (State)s, i);
+                }
+                for (Transition t : ((State)s).getOutgoing()) {
+                    buildTransitionsHelper(builder, ctx, (State)s, t);
+                }
             }
         }
         builder.append("final Region reg_" + r.qname("_") + " = new Region(\"" + r.getName() + "\", states_" + r.qname("_") + ", state_" + r.getInitial().qname("_") + ", transitions_" + r.qname("_") + ", ");

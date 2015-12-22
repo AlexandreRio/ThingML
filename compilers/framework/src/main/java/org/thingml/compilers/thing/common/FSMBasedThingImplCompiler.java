@@ -24,14 +24,20 @@ import org.thingml.compilers.thing.ThingImplCompiler;
  */
 public class FSMBasedThingImplCompiler extends ThingImplCompiler {
 
-    public void generateState(State s, StringBuilder builder, Context ctx) {
+    public void generateState(AbstractState s, StringBuilder builder, Context ctx) {
         if (s instanceof StateMachine) {
             generateStateMachine((StateMachine) s, builder, ctx);
         } else if (s instanceof CompositeState) {
             generateCompositeState((CompositeState) s, builder, ctx);
+        } else if (s instanceof State){
+            generateAtomicState((State)s, builder, ctx);
         } else {
-            generateAtomicState(s, builder, ctx);
+            generateFinalState((FinalState)s, builder, ctx);
         }
+    }
+
+    protected void generateFinalState(FinalState s, StringBuilder builder, Context ctx) {
+        throw new UnsupportedOperationException("to be implemented");
     }
 
     protected void generateStateMachine(StateMachine sm, StringBuilder builder, Context ctx) {
