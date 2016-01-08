@@ -629,6 +629,21 @@ public class ConfigurationImpl extends AnnotatedElementImpl implements Configura
         return result;
     }
 
+	/**
+	 *
+	 * @param t
+	 * @return
+	 * @generated NOT
+	 */
+	public List<Property> allArrays(Thing t) {
+		List<Property> result = new ArrayList<Property>();
+		for(Property p : t.allPropertiesInDepth()) {
+			if (p.getCardinality() != null)
+				result.add(p);
+		}
+		return result;
+	}
+
     /**
      *
      * @param i

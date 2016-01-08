@@ -8,9 +8,9 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <java.bootstrap.classes>${java.home}/lib/rt.jar</java.bootstrap.classes>
+        <!--<java.bootstrap.classes>${java.home}/lib/rt.jar</java.bootstrap.classes>
         <java.cryptographic.extension.classes>${java.home}/lib/jce.jar</java.cryptographic.extension.classes>
-        <java.secure.socket.extension.classes>${java.home}/lib/jsse.jar</java.secure.socket.extension.classes>
+        <java.secure.socket.extension.classes>${java.home}/lib/jsse.jar</java.secure.socket.extension.classes>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <thingml.version>0.6.0-SNAPSHOT</thingml.version>
         <jasm.version>0.1.0-SNAPSHOT</jasm.version>
@@ -61,12 +61,13 @@
             <version>${jasm.version}</version>
         </dependency>
 
-        <!--FIXME: should be only here if debug-->
+        <!--
         <dependency>
             <groupId>org.fusesource.jansi</groupId>
             <artifactId>jansi</artifactId>
             <version>1.11</version>
         </dependency>
+        -->
 
         <!--<dependency>
             <groupId>junit</groupId>

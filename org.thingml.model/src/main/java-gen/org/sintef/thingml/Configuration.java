@@ -187,6 +187,14 @@ public interface Configuration extends AnnotatedElement {
      */
     List<Property> allArrays(Instance i);
 
+	/**
+	 *
+	 * @param t
+	 * @return
+	 * @generated NOT
+	 */
+	List<Property> allArrays(Thing t);
+
     /**
      *
      * @param i

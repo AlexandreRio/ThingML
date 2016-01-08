@@ -20,6 +20,7 @@ import org.thingml.compilers.Context;
 import org.thingml.compilers.DebugProfile;
 import org.thingml.compilers.thing.common.FSMBasedThingImplCompiler;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -385,7 +386,7 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
 
         builder.append("//Empty Constructor\n");
         builder.append("public " + ctx.firstToUpper(thing.getName()) + "() {\nsuper();\n");
-        builder.append("org.fusesource.jansi.AnsiConsole.systemInstall();\n");//FIXME: only if debug
+        //builder.append("org.fusesource.jansi.AnsiConsole.systemInstall();\n");//FIXME: only if debug
         for (Property p : thing.allPropertiesInDepth()) {
             Expression e = thing.initExpression(p);
             if (e != null) {
@@ -457,7 +458,10 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
             }
         }
 
+        StringBuilder cloneBuilder = new StringBuilder();
+
         builder.append("public Component buildBehavior() {\n");
+        cloneBuilder.append("public CompositeState cloneBehavior(){\n");
 
         builder.append("//Init ports\n");
         for (Port p : thing.allPorts()) {
@@ -534,6 +538,9 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
                 }
                 for (Transition t : ((State)s).getOutgoing()) {
                     buildTransitionsHelper(builder, ctx, (State)s, t);
+                }
+                for (Fork f : ((State)s).getFork()) {
+                    buildTransitionsHelper(builder, ctx, (State)s, f);
                 }
             }
         }
@@ -614,6 +621,38 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
         }
     }
 
+    protected void generateFinalState(FinalState s, StringBuilder builder, Context ctx) {
+        builder.append("final AtomicState state_" + s.qname("_") + " = new AtomicState(\"" + s.getName() + "\")\n");
+        DebugProfile debugProfile = ctx.getCompiler().getDebugProfiles().get(s.findContainingThing());
+        if (s.getEntry() != null || debugProfile.isDebugBehavior()) {
+            builder.append("{\n");
+            if (s.getEntry() != null || debugProfile.isDebugBehavior()) {
+                builder.append("@Override\n");
+                builder.append("public void onEntry() {\n");
+                if (debugProfile.isDebugBehavior()) {
+                    //builder.append("if(isDebug()) System.out.println(org.fusesource.jansi.Ansi.ansi().eraseScreen().render(\"@|yellow \" + getName() + \": enters " + s.qualifiedName(":") + "|@\"));\n");
+                    builder.append("printDebug(\"" + ctx.traceOnEntry(s.findContainingThing(), s.findContainingRegion(), s) + "\");\n");
+                }
+                if (s.getEntry() != null)
+                    ctx.getCompiler().getThingActionCompiler().generate(s.getEntry(), builder, ctx);
+                //TODO: if fork stop() else System.exit
+                builder.append("stop();\n");
+                builder.append("delete();\n");
+                for(Port p : s.findContainingThing().allPorts()) {
+                    builder.append("get" + ctx.firstToUpper(p.getName()) + "_port().delete();\n");
+                }
+                builder.append("System.gc();\n");
+                builder.append("}\n\n");
+            }
+            builder.append("}");
+        }
+        builder.append(";\n");
+
+        if (s.eContainer() instanceof State || s.eContainer() instanceof Region) {
+            builder.append("states_" + ((ThingMLElement) s.eContainer()).qname("_") + ".add(state_" + s.qname("_") + ");\n");
+        }
+    }
+
     public void generateRegion(Region r, StringBuilder builder, Context ctx) {
 
         if (r instanceof CompositeState) {
@@ -648,6 +687,10 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
                 for (Transition t : ((State)s).getOutgoing()) {
                     buildTransitionsHelper(builder, ctx, (State)s, t);
                 }
+                for(Fork f : ((State)s).getFork()) {
+                    System.out.println("\t\tFORK YOU!");
+                    buildTransitionsHelper(builder, ctx, (State)s, f);
+                }
             }
         }
         builder.append("final Region reg_" + r.qname("_") + " = new Region(\"" + r.getName() + "\", states_" + r.qname("_") + ", state_" + r.getInitial().qname("_") + ", transitions_" + r.qname("_") + ", ");
@@ -657,8 +700,7 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
             builder.append("false");
         builder.append(");\n");
     }
-
-    private void buildTransitionsHelper(StringBuilder builder, Context ctx, State s, Handler i) {
+        private void buildTransitionsHelper(StringBuilder builder, Context ctx, State s, Handler i) {
         DebugProfile debugProfile = ctx.getCompiler().getDebugProfiles().get(s.findContainingThing());
         if (i.getEvent() != null && i.getEvent().size() > 0) {
             for (Event e : i.getEvent()) {
@@ -672,13 +714,15 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
                         builder.append(i.hashCode());
                     builder.append("\"," + r.getMessage().getName() + "Type, " + r.getPort().getName() + "_port, state_" + s.qname("_") + ", state_" + t.getTarget().qname("_") + ")");
                 } else {
-                    InternalTransition h = (InternalTransition) i;
+                    //InternalTransition h = (InternalTransition) i;
                     builder.append("transitions_" + ((ThingMLElement) s.eContainer()).qname("_") + ".add(new InternalTransition(\"");
                     if (i.getName() != null)
                         builder.append(i.getName());
                     else
                         builder.append(i.hashCode());
                     builder.append("\"," + r.getMessage().getName() + "Type, " + r.getPort().getName() + "_port, state_" + s.qname("_") + ")");
+                    if (i instanceof Fork)
+                        builder.append("/*Fork*/");
                 }
                 if (i.getGuard() != null || i.getAction() != null || debugProfile.isDebugBehavior())
                     builder.append("{\n");
@@ -695,7 +739,7 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
                     builder.append("}\n\n");
                 }
 
-                if (i.getAction() != null || debugProfile.isDebugBehavior()) {
+                if (i.getAction() != null || i instanceof Fork || debugProfile.isDebugBehavior()) {
                     builder.append("@Override\n");
                     builder.append("public void doExecute(final Event e) {\n");
                     if (debugProfile.isDebugBehavior()) {
@@ -713,8 +757,18 @@ public class JavaThingImplCompiler extends FSMBasedThingImplCompiler {
                     } else {
                         builder.append("final NullEvent " + r.getMessage().getName() + " = (NullEvent) e;\n");
                     }
-                    if (i.getAction() != null)
+                    if (i.getAction() != null) {
+                        if (i instanceof Fork) {//FIXME: we should keep refs to the forks and forward messages, etc
+                            builder.append(ctx.firstToUpper(i.findContainingThing().getName()) + " fork = new " + i.findContainingThing().getName() + "(\"forked (" + i.findContainingThing().getName() + ")\"");
+                            for (Property prop : i.findContainingThing().allPropertiesInDepth()) {
+                                builder.append(", " + ctx.firstToUpper(i.findContainingThing().getName()) + ".this." + ctx.getVariableName(prop));//FIXME: arrays should be cloned
+                            }
+                            builder.append(");\n");
+                            builder.append("fork.buildBehavior();\n");//FIXME: behavior should be adjusted to reflect updated initial state in the forked instance
+                            builder.append("fork.start();");
+                        }
                         ctx.getCompiler().getThingActionCompiler().generate(i.getAction(), builder, ctx);
+                    }
                     builder.append("}\n\n");
                 }
                 if (i.getGuard() != null || i.getAction() != null || debugProfile.isDebugBehavior())
